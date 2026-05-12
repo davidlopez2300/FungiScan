@@ -43,7 +43,7 @@ export default function App() {
     }
   };
 
-  const analyzeMushroom = async () => {
+ const analyzeMushroom = async () => {
     if (!selectedImage) return;
 
     setIsAnalyzing(true);
@@ -53,8 +53,13 @@ export default function App() {
     formData.append('file', selectedImage);
 
     try {
-      const response = await fetch('https://blitz-casing-catalog.ngrok-free.dev', {
+      // Aquí está la URL corregida con /predict
+      const response = await fetch('https://blitz-casing-catalog.ngrok-free.dev/predict', {
         method: 'POST',
+        headers: {
+          // Esto salta la pantalla de bloqueo de ngrok
+          'ngrok-skip-browser-warning': 'true'
+        },
         body: formData,
       });
 
@@ -64,7 +69,7 @@ export default function App() {
       setResult(data);
     } catch (error) {
       console.error(error);
-      setApiError('No se pudo conectar con el servidor de análisis. Asegúrate de que la API esté corriendo en localhost:8000');
+      setApiError('No se pudo conectar con el servidor de análisis en Colab.');
     } finally {
       setIsAnalyzing(false);
     }
